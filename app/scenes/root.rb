@@ -3,7 +3,8 @@ module Scenes
     def initialize
       super
       
-      
+      @fifteen = Scenes::FifteenPuzzle.new
+      self.add @fifteen, 'fifteen_puzzle' 
     end
 
     def tick args

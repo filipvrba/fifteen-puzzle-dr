@@ -54,5 +54,9 @@ module Core
     def to_s
       "(#{@x}, #{@y})"
     end
+
+    def eql? vector
+      self.x == vector.x and self.y == vector.y
+    end
   end 
 end

@@ -20,10 +20,11 @@ module Scenes
       @matrix.each.with_index do |row, y|
         row.each.with_index do |number, x|
           piece = Objects::Fifteen::Piece.new
-          piece.transform.position = Core::Vector2.new(x, y)
           self.add piece, "piece_#{number}"
         end
       end
+      
+      Fifteen.move_random(@matrix, 128)
     end
     
     def input inputs
@@ -34,13 +35,13 @@ module Scenes
       direction = Core::Vector2.new
 
       if inputs.keyboard.key_down.left
-        direction.x = 1
-      elsif inputs.keyboard.key_down.right
         direction.x = -1
+      elsif inputs.keyboard.key_down.right
+        direction.x = 1
       elsif inputs.keyboard.key_down.up
-        direction.y = 1
-      elsif inputs.keyboard.key_down.down
         direction.y = -1
+      elsif inputs.keyboard.key_down.down
+        direction.y = 1
       end
 
       unless direction.eql? Core::Vector2.new
@@ -48,9 +49,28 @@ module Scenes
       end
     end
 
+    def update args
+      pieces_size = Objects::Fifteen::Piece::SIZE * SIZE
+      self.transform.position = Core::Vector2.new(
+        (args.grid.w * 0.5) - (pieces_size * 0.5),
+        (args.grid.h * 0.5) + ((pieces_size * 0.5) * 0.5)
+      )
+
+      update_pieces()
+    end
+
+    def update_pieces
+      @matrix.each.with_index do |row, y|
+        row.each.with_index do |number, x|
+          piece = self.find_child("piece_#{number}")
+          piece.emit(Objects::Fifteen::Piece::UPDATE_ENV, x, -y)
+        end
+      end
+    end
+
     def move direction
       @matrix = Fifteen.move_last_number(@matrix, direction)
-      p "---Matrix---"
+      p "---Fifteen---"
       Fifteen.print @matrix
 
       if Fifteen.eql? @matrix

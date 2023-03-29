@@ -1,4 +1,4 @@
-require 'lib/fifteen/version.rb'
+require 'lib/fifteen-1.0.0/fifteen/version.rb'
 
 module Fifteen
   def self.get_matrix(size)

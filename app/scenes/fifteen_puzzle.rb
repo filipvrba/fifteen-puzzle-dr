@@ -1,8 +1,11 @@
 module Scenes
-  class FifteenPuzzle < Core::Object2
-    SIZE      = 4
+  class FifteenPuzzle < Core::Scene
+    SIZE         = 4
+    RANDOM_COUNT = 1
     MOVE_ENV  = 'sfpco_move'
     END_ENV   = 'sfpco_end'
+
+    attr_reader :is_deactivated
 
     def initialize
       super
@@ -10,7 +13,7 @@ module Scenes
       @h_end = lambda { end_game() }
 
       @matrix = Fifteen.get_matrix(SIZE)
-      @is_end = false
+      @is_deactivated = false
     end
 
     def ready
@@ -24,11 +27,11 @@ module Scenes
         end
       end
       
-      Fifteen.move_random(@matrix, 128)
+      Fifteen.move_random(@matrix, RANDOM_COUNT)
     end
     
     def input inputs
-      if @is_end
+      if @is_deactivated
         return
       end
 
@@ -50,7 +53,7 @@ module Scenes
     end
 
     def update args
-      pieces_size = Objects::Fifteen::Piece::SIZE * SIZE
+      pieces_size = self.find_child('piece_1').transform.scale.x * SIZE
       self.transform.position = Core::Vector2.new(
         (args.grid.w * 0.5) - (pieces_size * 0.5),
         (args.grid.h * 0.5) + ((pieces_size * 0.5) * 0.5)
@@ -79,7 +82,7 @@ module Scenes
     end
 
     def end_game
-      @is_end = true
+      @is_deactivated = true
       puts "[#{self.id}] MESSAGE end game"
     end
   end

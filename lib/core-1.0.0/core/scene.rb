@@ -1,6 +1,6 @@
 module Core
   class Scene < Object2
-    NAME_SCENE = "Scene::ROOT"
+    NAME_SCENE = "Core::Scene"
 
     def initialize
       super

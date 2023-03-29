@@ -4,9 +4,10 @@ module Core
     
     def initialize(position = Vector2.new,
         rotation = 0, scale = Vector2.new(1, 1))
+        
       @position = position
       @rotation = rotation
-      @scale = scale
+      @scale    = scale
     end
   end
 end

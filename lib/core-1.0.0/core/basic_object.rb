@@ -121,7 +121,7 @@ module Core
             break
           end
         else
-          super_class_name = _parent.superclass.name
+          super_class_name = _parent.class.superclass.name
           is_scene_name = _parent.class.name == Scene::NAME_SCENE ||
                           super_class_name == Scene::NAME_SCENE
 

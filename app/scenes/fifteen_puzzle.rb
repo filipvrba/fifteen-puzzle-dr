@@ -1,7 +1,7 @@
 module Scenes
   class FifteenPuzzle < Core::Scene
     SIZE         = 4
-    RANDOM_COUNT = 1
+    RANDOM_COUNT = 100
     MOVE_ENV  = 'sfpco_move'
     END_ENV   = 'sfpco_end'
 
@@ -9,8 +9,16 @@ module Scenes
 
     def initialize
       super
-      @h_move = lambda { |d| move(d) }
+      @h_move = lambda do |d|
+        l_function = lambda { Fifteen.move_last_number(@matrix, d) }
+        move(l_function)
+      end
       @h_end = lambda { end_game() }
+      @h_click_piece = lambda do |x, y|
+        position = Core::Vector2.new(x, y)
+        l_function = lambda { Fifteen.move_multiple_times(@matrix, position) }
+        move(l_function)
+      end
 
       @matrix = Fifteen.get_matrix(SIZE)
       @is_deactivated = false
@@ -19,6 +27,7 @@ module Scenes
     def ready
       self.connect MOVE_ENV, @h_move
       self.connect END_ENV, @h_end
+      self.connect Objects::Fifteen::Piece::CLICK_ENV, @h_click_piece
 
       @matrix.each.with_index do |row, y|
         row.each.with_index do |number, x|
@@ -71,8 +80,12 @@ module Scenes
       end
     end
 
-    def move direction
-      @matrix = Fifteen.move_last_number(@matrix, direction)
+    def move l_function
+      @matrix = l_function.call()
+      compare()
+    end
+
+    def compare
       p "---Fifteen---"
       Fifteen.print @matrix
 

@@ -5,6 +5,7 @@ module Objects
       SPEED = 0.5
 
       UPDATE_ENV = 'ofpco_update'
+      CLICK_ENV = 'ofpco_click'
 
       def initialize
         super
@@ -21,9 +22,25 @@ module Objects
 
       def update_position x, y
         self.transform.position = Core::Vector2.new(
-          Core::Mathf.lerp(self.transform.position.x, self.transform.scale.x * x, SPEED),
-          Core::Mathf.lerp(self.transform.position.y, self.transform.scale.x * y, SPEED)
+          Core::Mathf.lerp(self.transform.position.x, self.transform.scale.w * x, SPEED),
+          Core::Mathf.lerp(self.transform.position.y, self.transform.scale.h * y, SPEED)
         )
+      end
+
+      def input inputs
+        if inputs.mouse.click &&
+            inputs.mouse.inside_rect?({
+              x: self.global_position.x,
+              y: self.global_position.y,
+              w: self.global_scale.w,
+              h: self.global_scale.h
+            })
+          
+          self.get_scene.emit(CLICK_ENV,
+            (self.transform.position.x / SIZE).abs.round,
+            (self.transform.position.y / SIZE).abs.round
+          )
+        end
       end
 
       def update args

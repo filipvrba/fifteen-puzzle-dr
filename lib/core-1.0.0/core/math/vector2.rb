@@ -39,6 +39,10 @@ module Core
       Vector2.new(@x * scalar, @y * scalar)
     end
     
+    def divide_scalar(scalar)
+      Vector2.new(@x / scalar, @y / scalar)
+    end
+
     def magnitude
       Math.sqrt(@x * @x + @y * @y)
     end

@@ -19,6 +19,11 @@ module Components
         self.parent.connect CLICK_ENV, @h_click_piece
       end
 
+      def free
+        self.parent.disconnect CLICK_ENV, @h_click_piece
+        super
+      end
+
       def input inputs
         if self.parent.is_deactivated
           return

@@ -9,16 +9,16 @@ module Scenes
 
     def initialize
       super
-      @h_end = lambda { end_game() }
+      @h_end = lambda { end_game(); self.get_scene(true).end_game() }
       @c_movement = Components::FifteenPuzzle::Movement.new
       @c_input = Components::FifteenPuzzle::Input.new
-
-      @matrix = Fifteen.get_matrix(SIZE)
-      @is_deactivated = false
     end
 
     def ready
       self.connect END_ENV, @h_end
+
+      @matrix = Fifteen.get_matrix(SIZE)
+      @is_deactivated = false
 
       self.add @c_movement, 'component_movement'
       self.add @c_input, 'component_input'
@@ -31,25 +31,6 @@ module Scenes
         row.each.with_index do |number, x|
           piece = Objects::Fifteen::Piece.new
           self.add piece, "piece_#{number}"
-        end
-      end
-    end
-
-    def update args
-      pieces_size = self.find_child('piece_1').transform.scale.x * SIZE
-      self.transform.position = Core::Vector2.new(
-        (args.grid.w * 0.5) - (pieces_size * 0.5),
-        (args.grid.h * 0.5) + ((pieces_size * 0.5) * 0.5)
-      )
-
-      update_pieces()
-    end
-
-    def update_pieces
-      @matrix.each.with_index do |row, y|
-        row.each.with_index do |number, x|
-          piece = self.find_child("piece_#{number}")
-          piece.emit(Objects::Fifteen::Piece::UPDATE_ENV, x, -y)
         end
       end
     end

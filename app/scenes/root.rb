@@ -4,7 +4,12 @@ module Scenes
       super
       
       @fifteen = Scenes::FifteenPuzzle.new
-      self.add @fifteen, 'fifteen_puzzle' 
+      self.add @fifteen, 'fifteen_puzzle'
+    end
+
+    def end_game
+      @fifteen.free
+      self.add @fifteen, 'fifteen_puzzle'
     end
 
     def tick args

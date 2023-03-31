@@ -15,9 +15,34 @@ module Components
         Fifteen.move_random(self.parent.matrix, Scenes::FifteenPuzzle::RANDOM_COUNT)
       end
 
+      def free
+        self.parent.disconnect MOVE_ENV, @h_move
+        super
+      end
+
       def move l_function
         self.parent.matrix = l_function.call()
         self.parent.compare()
+      end
+
+      def update args
+        pieces_size = self.parent.find_child('piece_1').transform.scale.x *
+          Scenes::FifteenPuzzle::SIZE
+        self.parent.transform.position = Core::Vector2.new(
+          (args.grid.w * 0.5) - (pieces_size * 0.5),
+          (args.grid.h * 0.5) + ((pieces_size * 0.5) * 0.5)
+        )
+  
+        update_pieces()
+      end
+  
+      def update_pieces
+        self.parent.matrix.each.with_index do |row, y|
+          row.each.with_index do |number, x|
+            piece = self.parent.find_child("piece_#{number}")
+            piece.emit(Objects::Fifteen::Piece::UPDATE_ENV, x, -y)
+          end
+        end
       end
     end
   end

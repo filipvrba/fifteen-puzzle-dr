@@ -33,11 +33,12 @@ module Core
 
       handlers = @signals[type_s]
 
-      unless handlers == nil
+      if handlers
         index = handlers.index(handler)
-      end
-      unless index == -1
-        handlers.splice(index, 1)
+
+        if index > -1
+          handlers.splice(index, 1)
+        end
       end
     end
 

@@ -105,6 +105,15 @@ module Core
       if self.respond_to?(Events::INPUT.to_sym)
         get_scene(true).disconnect(Events::INPUT, self.input_handler)
       end
+
+      
+      if self.signals
+        self.signals.each do |event, handlers|
+          handlers.each do |handler|
+            self.disconnect(event, handler)
+          end
+        end
+      end
     end
 
     def get_scene(is_root = false, &block)

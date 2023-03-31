@@ -3,6 +3,7 @@ require 'lib/fifteen-1.0.0/fifteen.rb'
 
 require "app/scenes.rb"
 require 'app/objects.rb'
+require 'app/components.rb'
 
 def tick args
   args.state.scene_root ||= Scenes::Root.new

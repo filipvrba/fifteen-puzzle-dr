@@ -5,7 +5,6 @@ module Objects
       SPEED = 0.5
 
       UPDATE_ENV = 'ofpco_update'
-      CLICK_ENV = 'ofpco_click'
 
       def initialize
         super
@@ -36,7 +35,7 @@ module Objects
               h: self.global_scale.h
             })
           
-          self.get_scene.emit(CLICK_ENV,
+          self.get_scene.emit(Components::FifteenPuzzle::Input::CLICK_ENV,
             (self.transform.position.x / SIZE).abs.round,
             (self.transform.position.y / SIZE).abs.round
           )

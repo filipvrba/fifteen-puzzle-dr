@@ -23,7 +23,10 @@ module Scenes
       self.add @c_movement, 'component_movement'
       self.add @c_input, 'component_input'
 
-      # TODO: create fn
+      create_pieces()
+    end
+
+    def create_pieces
       @matrix.each.with_index do |row, y|
         row.each.with_index do |number, x|
           piece = Objects::Fifteen::Piece.new

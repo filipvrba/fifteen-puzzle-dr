@@ -3,7 +3,8 @@ module Core
     attr_accessor :id, :parent
     attr_reader :children
 
-    attr_accessor :update_handler, :draw_handler, :input_handler
+    attr_accessor :update_handler, :physics_update_handler
+    attr_accessor :draw_handler, :input_handler
 
     def initialize
       super
@@ -51,6 +52,12 @@ module Core
         get_scene(true).connect(Events::UPDATE, object.update_handler)
       end
 
+      # Physics Update
+      if object.respond_to?(Events::PHYSICS_UPDATE.to_sym)
+        object.physics_update_handler = lambda { |args| object.physics_update(args) }
+        get_scene(true).connect(Events::PHYSICS_UPDATE, object.physics_update_handler)
+      end
+
       # Draw
       if object.respond_to?(Events::DRAW.to_sym)
         object.draw_handler = lambda { |args| object.draw(args) }
@@ -96,6 +103,10 @@ module Core
     def free_signals
       if self.respond_to?(Events::UPDATE.to_sym)
         get_scene(true).disconnect(Events::UPDATE, self.update_handler)
+      end
+
+      if self.respond_to?(Events::PHYSICS_UPDATE.to_sym)
+        get_scene(true).disconnect(Events::PHYSICS_UPDATE, self.physics_update_handler)
       end
 
       if self.respond_to?(Events::DRAW.to_sym)
@@ -153,6 +164,17 @@ module Core
         if child.id == id
           result = child
           break
+        end
+      end
+
+      return result
+    end
+
+    def find_children(id)
+      result = []
+      @children.each do |child|
+        if child.id.index(id)
+          result << child
         end
       end
 

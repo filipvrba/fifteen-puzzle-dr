@@ -9,7 +9,7 @@ module Scenes
 
     def initialize
       super
-      @h_end = lambda { end_game(); self.get_scene(true).end_game() }
+      @h_end = lambda { end_game() }
       @c_movement = Components::FifteenPuzzle::Movement.new
       @c_input = Components::FifteenPuzzle::Input.new
     end
@@ -24,6 +24,26 @@ module Scenes
       self.add @c_input, 'component_input'
 
       create_pieces()
+    end
+
+    def update args
+      if all_deactivated?
+        self.get_scene(true).end_game
+      end 
+    end
+
+    def all_deactivated?
+      is_deactivated = true
+
+      pieces = self.find_children('piece_')
+      pieces.each do |piece|
+        unless piece.is_deactivated
+          is_deactivated = false
+          break
+        end
+      end
+
+      return is_deactivated
     end
 
     def create_pieces

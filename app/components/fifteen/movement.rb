@@ -26,7 +26,8 @@ module Components
       end
 
       def update args
-        pieces_size = self.parent.find_child('piece_1').transform.scale.x *
+        # pieces_size = self.parent.find_child('piece_1').transform.scale.x *
+        pieces_size = Objects::Fifteen::Piece::SIZE * 
           Scenes::FifteenPuzzle::SIZE
         self.parent.transform.position = Core::Vector2.new(
           (args.grid.w * 0.5) - (pieces_size * 0.5),

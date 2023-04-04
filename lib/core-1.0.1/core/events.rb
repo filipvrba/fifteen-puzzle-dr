@@ -3,6 +3,7 @@ module Core
     ADDED          = "added"
     READY          = "ready"
     UPDATE         = "update"
+    PHYSICS_UPDATE = "physics_update"
     DRAW           = "draw"
     INPUT          = "input"
 

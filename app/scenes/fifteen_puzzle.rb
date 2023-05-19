@@ -2,7 +2,7 @@ module FifteenPuzzleDR
   module Scenes
     class FifteenPuzzle < Core::Scene
       SIZE         = 4
-      RANDOM_COUNT = 1
+      RANDOM_COUNT = 100
       END_ENV   = 'sfpco_end'
 
       attr_accessor :matrix

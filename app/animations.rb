@@ -1,4 +1,6 @@
 require 'app/animations/fifteen/piece.rb'
 
-module Animations
+module FifteenPuzzleDR
+  module Animations
+  end
 end

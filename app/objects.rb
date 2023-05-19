@@ -1,4 +1,6 @@
 require 'app/objects/fifteen/piece.rb'
 
-module Objects
+module FifteenPuzzleDR
+  module Objects
+  end
 end
